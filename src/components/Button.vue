@@ -1,23 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
+import { ref} from 'vue';
 import Stars from './Stars.vue'
-
-interface ReviewData {
-  rating: number;
-  reviews: number;
-}
-
-const reviewData = ref<ReviewData | null>(null);
-const apiUrl = 'https://679b54ed33d31684632379e8.mockapi.io/api/button1/b1'; 
-onMounted(async () => {
-  try {
-    const response = await axios.get(apiUrl);
-    reviewData.value = response.data[0];
-  } catch (error) {
-    console.error('Помилка отримання даних:', error);
-  }
-});
+import {ReviewData} from '../types'
+const props = defineProps<{
+  reviewData: ReviewData | null;
+  title: string;
+}>();
 
 
 const redirectToGoogle = () => {
@@ -34,7 +22,7 @@ const showMessage = () => {
       <div class="review-head">
         <div class="review-header">
           <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google Logo" class="google-logo" />
-          <span class="review-header-text">Відгуки наших клієнтів у Google</span>
+          <span class="review-header-text"> {{ title }}</span>
         </div>
         <div class="review-content" v-if="reviewData">
           <span class="review-content-rating">
